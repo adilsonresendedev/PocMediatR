@@ -10,6 +10,6 @@ namespace PocMediatR.Common.Exceptions
             IHttpStatusCodeReturnable
     {
         public int StatusCode => StatusCodes.Status400BadRequest;
-        public string ErrorDescription => nameof(Messages.IvalidParameterValueException_error);
+        public string ErrorDescription => Translation.GetTranslatedMessage(Messages.IvalidParameterValueException_error);
     }
 }

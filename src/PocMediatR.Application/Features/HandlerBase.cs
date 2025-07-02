@@ -30,7 +30,6 @@ namespace PocMediatR.Application.Features
             return await ProcessHandler(request, cancellationToken);
         }
 
-        public abstract Task<TResponse> ProcessHandler(TRequest request, CancellationToken cancellationToken);
-
+        public abstract Task<TResponse> ProcessHandler(TRequest request, CancellationToken cancellationToken);  
     }
 }

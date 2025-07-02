@@ -61,6 +61,24 @@ namespace PocMediatR.Common.Translations.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Business rule error..
+        /// </summary>
+        public static string DomainException_detail {
+            get {
+                return ResourceManager.GetString("DomainException_detail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid description.
+        /// </summary>
+        public static string DomainExceptionIvalidDescription_error {
+            get {
+                return ResourceManager.GetString("DomainExceptionIvalidDescription_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parameter {0} is not valid..
         /// </summary>
         public static string IvalidParameterValueException_detail {
@@ -79,7 +97,7 @@ namespace PocMediatR.Common.Translations.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The resource was not found..
+        ///   Looks up a localized string similar to The resource {0} was not found..
         /// </summary>
         public static string ResourceNotFoundException_detail {
             get {
@@ -88,7 +106,7 @@ namespace PocMediatR.Common.Translations.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The resource {0} was not found..
+        ///   Looks up a localized string similar to The resource was not found..
         /// </summary>
         public static string ResourceNotFoundException_error {
             get {
@@ -99,7 +117,7 @@ namespace PocMediatR.Common.Translations.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Resource {0} should not be null..
         /// </summary>
-        public static string ResourceShouldNotBeNullException_detail {
+        public static string ResourceShouldNotBeNull_detail {
             get {
                 return ResourceManager.GetString("ResourceShouldNotBeNull_detail", resourceCulture);
             }
@@ -108,7 +126,7 @@ namespace PocMediatR.Common.Translations.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Resource should not be null..
         /// </summary>
-        public static string ResourceShouldNotBeNullException_error {
+        public static string ResourceShouldNotBeNull_error {
             get {
                 return ResourceManager.GetString("ResourceShouldNotBeNull_error", resourceCulture);
             }

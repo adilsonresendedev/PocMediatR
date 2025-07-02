@@ -1,15 +1,18 @@
 ﻿using FluentValidation;
-using MediatR;
 using PocMediatR.Domain.Context;
+using PocMediatR.Domain.Entities;
 
 namespace PocMediatR.Application.Features.Commands
 {
     public class CreatePriceTypeCommandHandler(IEnumerable<AbstractValidator<CreatePriceTypeCommand>> validators,
-        IPocMediatRContext context) : HandlerBase<CreatePriceTypeCommand, Unit>(validators)
+        IPocMediatRContext context) : HandlerBase<CreatePriceTypeCommand, CreatePriceTypeCommandResponse>(validators)
     {
-        public override Task<Unit> ProcessHandler(CreatePriceTypeCommand request, CancellationToken cancellationToken)
+        public override Task<CreatePriceTypeCommandResponse> ProcessHandler(CreatePriceTypeCommand request, CancellationToken cancellationToken)
         {
+            var priceType = PriceType.Create(request.Description);
+
             return default;
         }
     }
 }
+ 

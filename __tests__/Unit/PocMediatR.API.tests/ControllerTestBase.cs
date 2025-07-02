@@ -8,9 +8,9 @@ namespace PocMediatR.API.Tests
 {
     public abstract class ControllerTestBase<TController> where TController : ControllerBase
     {
-        private readonly TController controller;
-        private readonly IMediator mediator;
-        private readonly object[] parameters;
+        protected readonly TController controller;
+        protected readonly IMediator mediator;
+        protected readonly object[] parameters;
 
         protected ControllerTestBase()
         {

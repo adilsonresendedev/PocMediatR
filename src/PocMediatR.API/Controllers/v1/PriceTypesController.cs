@@ -9,7 +9,7 @@ namespace PocMediatR.API.Controllers
     public class PriceTypesController(IMediator mediator) : PocMediatRController
     {
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(CreatePriceTypeCommandResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Post([FromBody] CreatePriceTypeCommand request)

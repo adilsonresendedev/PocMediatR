@@ -117,16 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DomainExceptionIvalidDescription_error" xml:space="preserve">
+    <value>Invalid description</value>
+  </data>
+  <data name="DomainException_detail" xml:space="preserve">
+    <value>Business rule error.</value>
+  </data>
   <data name="IvalidParameterValueException_detail" xml:space="preserve">
     <value>Parameter {0} is not valid.</value>
   </data>
   <data name="IvalidParameterValueException_error" xml:space="preserve">
     <value>Invalid parameter value.</value>
   </data>
-  <data name="ResourceNotFoundException_detail" xml:space="preserve">
+  <data name="ResourceNotFoundException_error" xml:space="preserve">
     <value>The resource was not found.</value>
   </data>
-  <data name="ResourceNotFoundException_error" xml:space="preserve">
+  <data name="ResourceNotFoundException_detail" xml:space="preserve">
     <value>The resource {0} was not found.</value>
   </data>
   <data name="ResourceShouldNotBeNull_detail" xml:space="preserve">
