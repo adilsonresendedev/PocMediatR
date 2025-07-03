@@ -40,5 +40,11 @@ var LocalizationOptions = new RequestLocalizationOptions()
     .AddSupportedCultures(supportedCultures)
     .AddSupportedUICultures(supportedCultures);
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<PocMediatRContext>();
+    dbContext.Database.Migrate(); 
+}
+
 app.UseRequestLocalization(LocalizationOptions);
 app.Run();

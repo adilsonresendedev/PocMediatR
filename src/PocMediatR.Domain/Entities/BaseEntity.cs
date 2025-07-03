@@ -13,6 +13,7 @@ namespace PocMediatR.Domain.Entities
                 throw new AggregateException(Errors);
             }
         }
+
         public Guid Id { get; protected set; }
 
         protected BaseEntity()

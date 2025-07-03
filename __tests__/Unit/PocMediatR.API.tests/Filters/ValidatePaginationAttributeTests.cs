@@ -6,13 +6,12 @@ using Microsoft.AspNetCore.Routing;
 using PocMediatR.API.Filters;
 using PocMediatR.Common.Exceptions;
 using PocMediatR.Common.Interfaces;
-using System.Runtime.InteropServices;
 
 namespace PocMediatR.API.Tests.Filters
 {
     public class ValidatePaginationAttributeTests
     {
-        private readonly ValidaPaginationAttribute filter = new();
+        private readonly ValidatePaginationAttribute filter = new();
         private ActionExecutingContext context;
 
         private class TestPageable : IPageable
@@ -43,7 +42,8 @@ namespace PocMediatR.API.Tests.Filters
 
             CreateContext(pageable);
 
-            var exception = Should.Throw<AggregateException>(() => filter.OnActionExecuting(context!));
+            var exception = Should.Throw<AggregateException>(() => 
+                filter.OnActionExecuting(context!));
 
             exception
                 .InnerExceptions
@@ -51,10 +51,14 @@ namespace PocMediatR.API.Tests.Filters
         }
 
         [Fact]
-        public void Should_throw_when_page_is_invalid()
+        public void Should_not_throw_when_pagealbe_is_not_provided()
         {
+            CreateContextWithoutPageable();
 
+            ExecuteFilter()
+                .ShouldNotThrow();
         }
+
         private void CreateContext(object? pageable)
         {
             var actionContext = GetActionContext();

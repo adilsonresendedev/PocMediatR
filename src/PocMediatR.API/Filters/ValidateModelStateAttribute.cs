@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
+using PocMediatR.Common.Exceptions;
 
 namespace PocMediatR.API.Filters
 {
@@ -8,8 +9,16 @@ namespace PocMediatR.API.Filters
         {
             if (context.ModelState.IsValid)
                 return;
+            var invalidParameterValueExceptions = new List<InvalidParameterValueException>();
 
-            //var invalidParameterValueExceptions = new List<>
+            foreach (var modelStateEntry in context.ModelState.Where(ms => ms.Value!.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid))
+            {
+                var exception = new InvalidParameterValueException(modelStateEntry.Key);
+                invalidParameterValueExceptions.Add(exception);
+            }
+
+            if (invalidParameterValueExceptions.Count != 0)
+                throw new AggregateException([.. invalidParameterValueExceptions]);
         }
     }
 }
