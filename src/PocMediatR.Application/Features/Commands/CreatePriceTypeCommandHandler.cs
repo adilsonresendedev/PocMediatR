@@ -7,11 +7,19 @@ namespace PocMediatR.Application.Features.Commands
     public class CreatePriceTypeCommandHandler(IEnumerable<AbstractValidator<CreatePriceTypeCommand>> validators,
         IPocMediatRContext context) : HandlerBase<CreatePriceTypeCommand, CreatePriceTypeCommandResponse>(validators)
     {
-        public override Task<CreatePriceTypeCommandResponse> ProcessHandler(CreatePriceTypeCommand request, CancellationToken cancellationToken)
+        public override async Task<CreatePriceTypeCommandResponse> ProcessHandler(CreatePriceTypeCommand request, CancellationToken cancellationToken)
         {
             var priceType = PriceType.Create(request.Description);
 
-            return default;
+            await context.PriceTypes.AddAsync(priceType, cancellationToken);
+
+            await context.SaveChangesAsync(cancellationToken);
+
+            return new CreatePriceTypeCommandResponse
+            {
+                Id = priceType.Id,
+                Description = priceType.Description
+            };
         }
     }
 }

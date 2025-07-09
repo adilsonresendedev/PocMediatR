@@ -1,1 +1,9 @@
-﻿
+﻿global using FizzWare.NBuilder;
+global using FluentValidation;
+global using MediatR;
+global using NSubstitute;
+global using PocMediatR.Application.Features;
+global using PocMediatR.Application.Features.Commands;
+global using PocMediatR.Domain.Context;
+global using PocMediatR.Domain.Entities;
+global using Shouldly;

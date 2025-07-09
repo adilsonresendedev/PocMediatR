@@ -21,5 +21,11 @@ namespace PocMediatR.Infra.Context
         //public DbSet<Category> Categories  { get; set; }
         public DbSet<PriceType> PriceTypes  { get; set; }
         //public DbSet<Price> Prices  { get; set; }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+        {
+            var affectedRows = await base.SaveChangesAsync(cancellationToken);
+            return affectedRows;
+        }
     }
 }
