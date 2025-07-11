@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.6" />
+    <PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.6.6" />
     <PackageReference Include="Z.EntityFramework.Extensions.EFCore" Version="9.103.9" />
   </ItemGroup>
@@ -15,6 +16,10 @@
   <ItemGroup>
     <ProjectReference Include="..\PocMediatR.Common\PocMediatR.Common.csproj" />
     <ProjectReference Include="..\PocMediatR.Domain\PocMediatR.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Queues\" />
   </ItemGroup>
 
 </Project>

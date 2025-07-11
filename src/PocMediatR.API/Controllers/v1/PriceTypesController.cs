@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using PocMediatR.Application.Features.Commands;
+using PocMediatR.Application.Features.Commands.CreatePriceType;
 using PocMediatR.Common.Models;
 
 namespace PocMediatR.API.Controllers

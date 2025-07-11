@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace PocMediatR.Application.Features.Commands
+namespace PocMediatR.Application.Features.Commands.CreatePriceType
 {
     public class CreatePriceTypeCommandValidator : AbstractValidator<CreatePriceTypeCommand>
     {

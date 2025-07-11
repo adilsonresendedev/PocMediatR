@@ -1,4 +1,6 @@
-﻿namespace PocMediatR.Application.Tests.Features.Commands
+﻿using PocMediatR.Application.Features.Commands.CreatePriceType;
+
+namespace PocMediatR.Application.Tests.Features.Commands.CreatePriceType
 {
     public class CreatePriceTypeCommandHandlerTests : HandlerTestBase<CreatePriceTypeCommand, CreatePriceTypeCommandHandler, CreatePriceTypeCommandResponse>
     {
@@ -20,13 +22,26 @@
         }
 
         [Fact]
+        public void Should_throw_when_no_data_is_inserted()
+        {
+            Context.SaveChangesAsync(Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(0));
+
+            Should.Throw<InvalidOperationException>(() => CallHandler(defaultRequest));
+        }
+
+        [Fact]
         public void Should_insert_correctly()
         {
+            Context.SaveChangesAsync(Arg.Any<CancellationToken>())
+               .Returns(Task.FromResult(1));
+
             var result = CallHandler(defaultRequest);
 
             Context.PriceTypes.Received(1).AddAsync(Arg.Any<PriceType>(), Arg.Any<CancellationToken>());
             result.Id.ShouldNotBe(Guid.Empty);
             result.Description.ShouldBe(defaultRequest.Description);
         }
+
     }
 }

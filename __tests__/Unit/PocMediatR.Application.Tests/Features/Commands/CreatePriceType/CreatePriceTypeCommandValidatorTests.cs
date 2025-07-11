@@ -1,4 +1,6 @@
-﻿namespace PocMediatR.Application.Tests.Features.Commands
+﻿using PocMediatR.Application.Features.Commands.CreatePriceType;
+
+namespace PocMediatR.Application.Tests.Features.Commands.CreatePriceType
 {
     public class CreatePriceTypeCommandValidatorTests : ValidatorTestBase<CreatePriceTypeCommand, CreatePriceTypeCommandValidator>
     {

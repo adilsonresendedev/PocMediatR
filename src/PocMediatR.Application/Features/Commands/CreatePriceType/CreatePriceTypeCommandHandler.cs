@@ -1,19 +1,21 @@
 ﻿using FluentValidation;
 using PocMediatR.Domain.Context;
-using PocMediatR.Domain.Entities;
 
-namespace PocMediatR.Application.Features.Commands
+namespace PocMediatR.Application.Features.Commands.CreatePriceType
 {
     public class CreatePriceTypeCommandHandler(IEnumerable<AbstractValidator<CreatePriceTypeCommand>> validators,
         IPocMediatRContext context) : HandlerBase<CreatePriceTypeCommand, CreatePriceTypeCommandResponse>(validators)
     {
         public override async Task<CreatePriceTypeCommandResponse> ProcessHandler(CreatePriceTypeCommand request, CancellationToken cancellationToken)
         {
-            var priceType = PriceType.Create(request.Description);
+            var priceType = Domain.Entities.PriceType.Create(request.Description);
 
             await context.PriceTypes.AddAsync(priceType, cancellationToken);
 
-            await context.SaveChangesAsync(cancellationToken);
+            var affectedRows = await context.SaveChangesAsync(cancellationToken);
+
+            if (affectedRows == 0)
+                throw new InvalidOperationException();
 
             return new CreatePriceTypeCommandResponse
             {

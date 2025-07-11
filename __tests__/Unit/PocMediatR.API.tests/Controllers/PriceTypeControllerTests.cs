@@ -1,4 +1,6 @@
-﻿namespace PocMediatR.API.Tests.Controllers
+﻿using PocMediatR.Application.Features.Commands.CreatePriceType;
+
+namespace PocMediatR.API.Tests.Controllers
 {
     public class PriceTypeControllerTests : ControllerTestBase<PriceTypesController>
     {
