@@ -1,5 +1,6 @@
 ﻿using PocMediatR.Common.Exceptions;
 using PocMediatR.Common.Translations.Resources;
+using PocMediatR.Domain.Events;
 
 namespace PocMediatR.Domain.Entities
 {
@@ -9,7 +10,12 @@ namespace PocMediatR.Domain.Entities
 
         public static PriceType Create(string description)
         {
-            return new PriceType(description);
+            var priceType = new PriceType(description);
+
+            priceType.AddDomainEvent(
+                new EntityChangedDomainEvent<PriceType>(priceType, nameof(Create)));
+
+            return priceType;
         }
 
         private PriceType(string description)
@@ -22,6 +28,9 @@ namespace PocMediatR.Domain.Entities
         {
             Validate(description);
             Description = description;
+
+            AddDomainEvent(
+                new EntityChangedDomainEvent<PriceType>(this, nameof(Update)));
         }
 
         private void Validate(string description)
@@ -29,7 +38,7 @@ namespace PocMediatR.Domain.Entities
             if (string.IsNullOrWhiteSpace(description))
                 Errors.Add(new DomainException(Messages.DomainExceptionIvalidDescription_error));
 
-            ThrowIfHasError();
+            ThrowIfHasError(); 
         }
     }
 }

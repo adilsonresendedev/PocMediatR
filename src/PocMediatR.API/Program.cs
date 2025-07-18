@@ -5,6 +5,8 @@ using PocMediatR.Application.Configurations.Mediator;
 using PocMediatR.Common.Translations;
 using PocMediatR.Domain.Context;
 using PocMediatR.Infra.Context;
+using PocMediatR.Infra.MessageBus;
+using PocMediatR.Infra.Settings;
 
 var supportedCultures = new string[] { AcceptedLanguages.En_US, AcceptedLanguages.Pt_Br };
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +21,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMediator();
 builder.Services.AddFluentValidation();
 builder.Services.AddScoped<IPocMediatRContext, PocMediatRContext>();
+
+builder.Services.Configure<RabbitMqSettings>(
+    builder.Configuration.GetSection(nameof(RabbitMqSettings)));
+
+builder.Services.AddSingleton<IMessageBus, RabbitMqMessageBus>();
 
 var app = builder.Build();
 

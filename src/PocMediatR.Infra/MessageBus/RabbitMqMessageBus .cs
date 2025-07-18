@@ -1,4 +1,6 @@
-﻿using RabbitMQ.Client;
+﻿using Microsoft.Extensions.Options;
+using PocMediatR.Infra.Settings;
+using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json;
 
@@ -7,14 +9,16 @@ namespace PocMediatR.Infra.MessageBus
     public class RabbitMqMessageBus : IMessageBus
     {
         private readonly ConnectionFactory _factory;
-
-        public RabbitMqMessageBus(string hostName, string userName, string password)
+        private readonly RabbitMqSettings _rabbitMqSettings;
+        public RabbitMqMessageBus(IOptions<RabbitMqSettings> rabbitMqSettings)
         {
+            _rabbitMqSettings = rabbitMqSettings.Value;
+
             _factory = new ConnectionFactory
             {
-                HostName = hostName,
-                UserName = userName,
-                Password = password
+                HostName = _rabbitMqSettings.HostName,
+                UserName = _rabbitMqSettings.UserName,
+                Password = _rabbitMqSettings.Password
             };
         }
 

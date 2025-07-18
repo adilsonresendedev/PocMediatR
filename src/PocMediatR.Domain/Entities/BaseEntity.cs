@@ -5,9 +5,20 @@ namespace PocMediatR.Domain.Entities
 {
     public abstract class BaseEntity
     {
+        private List<INotification>? _domainEvents;
+        public IReadOnlyCollection<INotification>? DomainEvents => _domainEvents?.AsReadOnly();
+        public Guid Id { get; protected set; }
         protected List<DomainException> Errors { get; set; } = new();
-        private List<INotification> _domainEvents;
-        public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
+
+        protected BaseEntity()
+        {
+            Id = Guid.NewGuid();
+        }
+
+        protected BaseEntity(Guid id)
+        {
+            Id = id == Guid.Empty ? Guid.NewGuid() : id;
+        }
 
         public void AddDomainEvent(INotification eventItem)
         {
@@ -26,18 +37,6 @@ namespace PocMediatR.Domain.Entities
             {
                 throw new AggregateException(Errors);
             }
-        }
-
-        public Guid Id { get; protected set; }
-
-        protected BaseEntity()
-        {
-            Id = Guid.NewGuid();
-        }
-
-        protected BaseEntity(Guid id)
-        {
-            Id = id == Guid.Empty ? Guid.NewGuid() : id;
         }
     }
 }

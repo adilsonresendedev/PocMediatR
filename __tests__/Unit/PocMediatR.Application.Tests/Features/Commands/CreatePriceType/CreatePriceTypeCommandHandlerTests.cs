@@ -1,10 +1,14 @@
-﻿using PocMediatR.Application.Features.Commands.CreatePriceType;
+﻿using Azure.Core;
+using MediatR;
+using PocMediatR.Application.Features.Commands.CreatePriceType;
+using PocMediatR.Domain.Events;
 
 namespace PocMediatR.Application.Tests.Features.Commands.CreatePriceType
 {
     public class CreatePriceTypeCommandHandlerTests : HandlerTestBase<CreatePriceTypeCommand, CreatePriceTypeCommandHandler, CreatePriceTypeCommandResponse>
     {
         private IPocMediatRContext Context => GetParam<IPocMediatRContext>();
+        private IMediator Mediator => GetParam<IMediator>();
         private CreatePriceTypeCommand defaultRequest;
         public CreatePriceTypeCommandHandlerTests()
         {
@@ -39,6 +43,7 @@ namespace PocMediatR.Application.Tests.Features.Commands.CreatePriceType
             var result = CallHandler(defaultRequest);
 
             Context.PriceTypes.Received(1).AddAsync(Arg.Any<PriceType>(), Arg.Any<CancellationToken>());
+
             result.Id.ShouldNotBe(Guid.Empty);
             result.Description.ShouldBe(defaultRequest.Description);
         }

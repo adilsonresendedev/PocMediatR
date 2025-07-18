@@ -21,23 +21,22 @@ namespace PocMediatR.Infra.Context
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
-        //public DbSet<Product> Products { get; set; }
-        //public DbSet<Category> Categories  { get; set; }
+ 
         public DbSet<PriceType> PriceTypes  { get; set; }
-        //public DbSet<Price> Prices  { get; set; }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             var result = await base.SaveChangesAsync(cancellationToken);
 
-            var entitiesWithEvents = ChangeTracker.Entries<BaseEntity>()
-                .Select(e => e.Entity)
-                .Where(e => e.DomainEvents?.Any() == true)
+            var entitiesWithEvents = ChangeTracker
+                .Entries()
+                .Where(e => e.Entity is BaseEntity baseEntity && baseEntity.DomainEvents?.Any() == true)
+                .Select(e => (BaseEntity)e.Entity)
                 .ToList();
 
             foreach (var entity in entitiesWithEvents)
             {
-                var events = entity.DomainEvents.ToList();
+                var events = entity.DomainEvents!.ToList();
                 entity.ClearDomainEvents();
 
                 foreach (var domainEvent in events)
