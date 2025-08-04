@@ -10,7 +10,7 @@ using PocMediatR.Infra.Context;
 
 namespace PocMediatR.Infra.migartions
 {
-    [DbContext(typeof(PocMediatRContext))]
+    [DbContext(typeof(PocMediatRWriteContext))]
     partial class PocMediatRContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

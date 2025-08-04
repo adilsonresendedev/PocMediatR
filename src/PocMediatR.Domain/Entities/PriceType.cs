@@ -24,6 +24,17 @@ namespace PocMediatR.Domain.Entities
             Description = description;
         }
 
+        public static PriceType FromSync(Guid id, string description)
+        {
+            return new PriceType
+            {
+                Id = id,
+                Description = description
+            };
+        }
+
+        private PriceType() { }
+
         public void Update(string description)
         {
             Validate(description);

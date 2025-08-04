@@ -7,9 +7,9 @@ namespace PocMediatR.Application.Events.PriceTypeChanged
 {
     public class PriceTypeChangedEventHandler : INotificationHandler<EntityChangedDomainEvent<PriceType>>
     {
-        private readonly IMessageBus _messageBus;
+        private readonly IPublisherMessageBus _messageBus;
 
-        public PriceTypeChangedEventHandler(IMessageBus messageBus)
+        public PriceTypeChangedEventHandler(IPublisherMessageBus messageBus)
         {
             _messageBus = messageBus;
         }
@@ -24,7 +24,7 @@ namespace PocMediatR.Application.Events.PriceTypeChanged
                 EventDate = DateTime.UtcNow
             };
 
-            await _messageBus.PublishAsync(queueName, payload);
+            await _messageBus.PublishAsync(queueName, payload, cancellationToken);
         }
     }
 }

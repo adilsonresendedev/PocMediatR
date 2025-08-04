@@ -12,11 +12,11 @@ namespace PocMediatR.Application.Tests.Events.PriceTypeChanged
         {
             var priceType = PriceType.Create("Test");
             var @event = new EntityChangedDomainEvent<PriceType>(priceType, "Create");
-            var messageBus = GetParam<IMessageBus>();
+            var messageBus = GetParam<IPublisherMessageBus>();
 
             await HandleEventAsync(@event);
 
-            await messageBus.Received(1).PublishAsync(Arg.Any<string>(), Arg.Any<object>());
+            await messageBus.Received(1).PublishAsync(Arg.Any<string>(), Arg.Any<object>(), Arg.Any<CancellationToken>());
         }
     }
 }

@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocMediatR.Domain", "src\Po
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocMediatR.Infra", "src\PocMediatR.Infra\PocMediatR.Infra.csproj", "{A5B56D29-DEFD-90FC-9C43-766326CA3E4C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocMediatR.EntitySyncWorker", "src\PocMediatR.EntitySyncWorker\PocMediatR.EntitySyncWorker.csproj", "{F46E6015-0431-1C7A-E8FF-A53B80251254}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{A5B56D29-DEFD-90FC-9C43-766326CA3E4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5B56D29-DEFD-90FC-9C43-766326CA3E4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5B56D29-DEFD-90FC-9C43-766326CA3E4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F46E6015-0431-1C7A-E8FF-A53B80251254}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F46E6015-0431-1C7A-E8FF-A53B80251254}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F46E6015-0431-1C7A-E8FF-A53B80251254}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F46E6015-0431-1C7A-E8FF-A53B80251254}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,6 +100,7 @@ Global
 		{B0D84C81-CAF4-9D3F-3F7D-D129C8308EED} = {03FE183A-B753-48C7-9880-059A707D0272}
 		{193D68D6-F33D-55D9-5202-8C3D405188BF} = {03FE183A-B753-48C7-9880-059A707D0272}
 		{A5B56D29-DEFD-90FC-9C43-766326CA3E4C} = {03FE183A-B753-48C7-9880-059A707D0272}
+		{F46E6015-0431-1C7A-E8FF-A53B80251254} = {03FE183A-B753-48C7-9880-059A707D0272}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E3AA53A1-C93D-4A59-B390-EC6E2DD6801E}

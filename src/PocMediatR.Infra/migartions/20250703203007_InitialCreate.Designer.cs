@@ -11,7 +11,7 @@ using PocMediatR.Infra.Context;
 
 namespace PocMediatR.Infra.migartions
 {
-    [DbContext(typeof(PocMediatRContext))]
+    [DbContext(typeof(PocMediatRWriteContext))]
     [Migration("20250703203007_InitialCreate")]
     partial class InitialCreate
     {

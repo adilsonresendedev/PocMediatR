@@ -6,34 +6,27 @@ using System.Text.Json;
 
 namespace PocMediatR.Infra.MessageBus
 {
-    public class RabbitMqMessageBus : IMessageBus
+    public class RabbitMqPublisherMessageBus : IPublisherMessageBus
     {
         private readonly ConnectionFactory _factory;
-        private readonly RabbitMqSettings _rabbitMqSettings;
-        public RabbitMqMessageBus(IOptions<RabbitMqSettings> rabbitMqSettings)
-        {
-            _rabbitMqSettings = rabbitMqSettings.Value;
 
+        public RabbitMqPublisherMessageBus(IOptions<RabbitMqSettings> rabbitMqSettings)
+        {
+            var settings = rabbitMqSettings.Value;
             _factory = new ConnectionFactory
             {
-                HostName = _rabbitMqSettings.HostName,
-                UserName = _rabbitMqSettings.UserName,
-                Password = _rabbitMqSettings.Password
+                HostName = settings.HostName,
+                UserName = settings.UserName,
+                Password = settings.Password
             };
         }
 
-        public async Task PublishAsync(string queue, object message)
+        public async Task PublishAsync<T>(string queue, T message, CancellationToken cancellationToken)
         {
             using var connection = await _factory.CreateConnectionAsync();
             using var channel = await connection.CreateChannelAsync();
 
-            await channel.QueueDeclareAsync(
-                queue: queue,
-                durable: true,
-                exclusive: false,
-                autoDelete: false,
-                arguments: null
-            );
+            await channel.QueueDeclareAsync(queue, durable: true, exclusive: false, autoDelete: false);
 
             var json = JsonSerializer.Serialize(message);
             var body = Encoding.UTF8.GetBytes(json);

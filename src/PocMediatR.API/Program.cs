@@ -13,23 +13,27 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<PocMediatRContext>(options =>
+builder.Services.AddDbContext<PocMediatRWriteContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddDbContext<PocMediatRReadContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSql")));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediator();
 builder.Services.AddFluentValidation();
-builder.Services.AddScoped<IPocMediatRContext, PocMediatRContext>();
+builder.Services.AddScoped<IPocMediatRContext, PocMediatRWriteContext>();
 
 builder.Services.Configure<RabbitMqSettings>(
     builder.Configuration.GetSection(nameof(RabbitMqSettings)));
 
-builder.Services.AddSingleton<IMessageBus, RabbitMqMessageBus>();
+builder.Services.AddSingleton<IConsumerMessageBus, RabbitMqConsumerMessageBus>();
+builder.Services.AddSingleton<IPublisherMessageBus, RabbitMqPublisherMessageBus>();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())    
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -49,7 +53,7 @@ var LocalizationOptions = new RequestLocalizationOptions()
 
 using (var scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<PocMediatRContext>();
+    var dbContext = scope.ServiceProvider.GetRequiredService<PocMediatRWriteContext>();
     dbContext.Database.Migrate(); 
 }
 

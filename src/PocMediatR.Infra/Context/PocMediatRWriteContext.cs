@@ -6,11 +6,11 @@ using System.Reflection;
 
 namespace PocMediatR.Infra.Context
 {
-    public class PocMediatRContext : DbContext, IPocMediatRContext
+    public class PocMediatRWriteContext : DbContext, IPocMediatRContext
     {
         private readonly IMediator _mediator;
 
-        public PocMediatRContext(DbContextOptions<PocMediatRContext> options, IMediator mediator)
+        public PocMediatRWriteContext(DbContextOptions<PocMediatRWriteContext> options, IMediator mediator)
             : base(options)
         {
             _mediator = mediator;
