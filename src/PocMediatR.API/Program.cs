@@ -14,10 +14,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<PocMediatRWriteContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
 
 builder.Services.AddDbContext<PocMediatRReadContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSql")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresSql")));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -50,8 +50,8 @@ var LocalizationOptions = new RequestLocalizationOptions()
 
 using (var scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<PocMediatRWriteContext>();
-    dbContext.Database.Migrate(); 
+    var writeDbContext = scope.ServiceProvider.GetRequiredService<PocMediatRWriteContext>();
+    writeDbContext.Database.Migrate();
 }
 
 app.UseRequestLocalization(LocalizationOptions);

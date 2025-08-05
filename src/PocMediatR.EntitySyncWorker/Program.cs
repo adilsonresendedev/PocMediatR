@@ -15,7 +15,7 @@ builder.Services.AddSingleton<IMessageDispacher, MessageDispatcher>();
 builder.Services.AddScoped<IMessageHandler<PriceTypeMessage>, PriceTypeHandler>();
 
 builder.Services.AddDbContext<PocMediatRReadContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSql")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresSql")));
 
 var host = builder.Build();
 host.Run();
