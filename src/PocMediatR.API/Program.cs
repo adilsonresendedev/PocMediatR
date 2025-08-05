@@ -25,10 +25,7 @@ builder.Services.AddMediator();
 builder.Services.AddFluentValidation();
 builder.Services.AddScoped<IPocMediatRContext, PocMediatRWriteContext>();
 
-builder.Services.Configure<RabbitMqSettings>(
-    builder.Configuration.GetSection(nameof(RabbitMqSettings)));
-
-builder.Services.AddSingleton<IConsumerMessageBus, RabbitMqConsumerMessageBus>();
+builder.Services.Configure<RabbitMqSettings>(builder.Configuration.GetSection(nameof(RabbitMqSettings)));
 builder.Services.AddSingleton<IPublisherMessageBus, RabbitMqPublisherMessageBus>();
 
 var app = builder.Build();

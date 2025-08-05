@@ -1,13 +1,16 @@
 ﻿using MediatR;
 using PocMediatR.Common.Exceptions;
+using System.Text.Json.Serialization;
 
 namespace PocMediatR.Domain.Entities
 {
     public abstract class BaseEntity
     {
+        [JsonIgnore]
         private List<INotification>? _domainEvents;
         public IReadOnlyCollection<INotification>? DomainEvents => _domainEvents?.AsReadOnly();
         public Guid Id { get; protected set; }
+        [JsonIgnore]
         protected List<DomainException> Errors { get; set; } = new();
 
         protected BaseEntity()

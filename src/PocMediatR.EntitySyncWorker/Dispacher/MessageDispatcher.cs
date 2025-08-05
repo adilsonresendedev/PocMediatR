@@ -4,8 +4,8 @@ using PocMediatR.EntitySyncWorker.Messages;
 using System.Text.Json;
 
 namespace PocMediatR.EntitySyncWorker.Dispacher
-{
-    public class MessageDispatcher
+{   
+    public class MessageDispatcher : IMessageDispacher
     {
         private readonly IServiceProvider _provider;
 
@@ -14,18 +14,20 @@ namespace PocMediatR.EntitySyncWorker.Dispacher
             _provider = provider;
         }
 
-        public async Task DispatchAsync(BaseEntityMessage envelope, CancellationToken ct)
+        public async Task DispatchAsync(BaseEntityMessage envelope, CancellationToken cancellationToken)
         {
-            switch (envelope.EntityType.ToLowerInvariant())
+            using var scope = _provider.CreateScope();
+
+            switch (envelope?.EntityType)
             {
                 case nameof(PriceType):
                     var priceType = JsonSerializer.Deserialize<PriceTypeMessage>(envelope.Payload);
-                    var handler = _provider.GetRequiredService<IMessageHandler<PriceTypeMessage>>();
-                    await handler.HandleAsync(priceType!, ct);
+                    var handler = scope.ServiceProvider.GetRequiredService<IMessageHandler<PriceTypeMessage>>();
+                    await handler.HandleAsync(priceType!, cancellationToken);
                     break;
 
                 default:
-                    throw new NotSupportedException($"Entity type '{envelope.EntityType}' is not supported.");
+                    throw new NotSupportedException($"Entity type '{envelope?.EntityType}' is not supported.");
             }
         }
     }

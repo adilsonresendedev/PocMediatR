@@ -4,5 +4,6 @@
     {
         public string EntityType { get; set; } = default!;
         public string Payload { get; set; } = default!;
+        public DateTime EventDate { get; set; }
     }
 }

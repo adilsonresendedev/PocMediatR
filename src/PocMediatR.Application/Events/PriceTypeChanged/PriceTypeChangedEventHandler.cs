@@ -2,6 +2,7 @@
 using PocMediatR.Domain.Entities;
 using PocMediatR.Domain.Events;
 using PocMediatR.Infra.MessageBus;
+using System.Text.Json;
 
 namespace PocMediatR.Application.Events.PriceTypeChanged
 {
@@ -16,11 +17,11 @@ namespace PocMediatR.Application.Events.PriceTypeChanged
 
         public async Task Handle(EntityChangedDomainEvent<PriceType> notification, CancellationToken cancellationToken)
         {
-            var queueName = $"entity.pricetype.changed";
+            var queueName = $"entity.changed";
             var payload = new
             {
-                notification.Entity,
-                notification.ChangeType,
+                Payload = JsonSerializer.Serialize(notification.Entity),
+                EntityType = nameof(PriceType),
                 EventDate = DateTime.UtcNow
             };
 

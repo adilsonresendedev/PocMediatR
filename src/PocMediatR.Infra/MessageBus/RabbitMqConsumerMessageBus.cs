@@ -30,6 +30,7 @@ namespace PocMediatR.Infra.MessageBus
             await channel.QueueDeclareAsync(queue, durable: true, exclusive: false, autoDelete: false);
 
             var consumer = new AsyncEventingBasicConsumer(channel);
+
             consumer.ReceivedAsync += async (model, ea) =>
             {
                 try
@@ -39,15 +40,25 @@ namespace PocMediatR.Infra.MessageBus
                     var message = JsonSerializer.Deserialize<T>(json);
 
                     if (message != null)
+                    {
                         await onMessage(message);
+
+                        await channel.BasicAckAsync(ea.DeliveryTag, multiple: false);
+                    }
+                    else
+                    {
+                        await channel.BasicNackAsync(ea.DeliveryTag, multiple: false, requeue: false);
+                    }
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Error processing message: {ex.Message}");
+
+                    await channel.BasicNackAsync(ea.DeliveryTag, multiple: false, requeue: false);
                 }
             };
 
-            await channel.BasicConsumeAsync(queue, autoAck: true, consumer);
+            await channel.BasicConsumeAsync(queue, autoAck: false, consumer);
 
             while (!cancellationToken.IsCancellationRequested)
             {

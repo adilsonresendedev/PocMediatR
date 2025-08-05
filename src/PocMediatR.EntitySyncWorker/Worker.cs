@@ -7,9 +7,9 @@ namespace PocMediatR.EntitySyncWorker;
 public class Worker : BackgroundService
 {
     private readonly IConsumerMessageBus _bus;
-    private readonly MessageDispatcher _dispatcher;
+    private readonly IMessageDispacher _dispatcher;
 
-    public Worker(IConsumerMessageBus bus, MessageDispatcher dispatcher)
+    public Worker(IConsumerMessageBus bus, IMessageDispacher dispatcher)
     {
         _bus = bus;
         _dispatcher = dispatcher;
@@ -18,7 +18,7 @@ public class Worker : BackgroundService
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         return _bus.ConsumeAsync<BaseEntityMessage>(
-            queue: "entity.sync",
+            queue: "entity.changed",
             message: (msg) => _dispatcher.DispatchAsync(msg, stoppingToken),
             cancellationToken: stoppingToken
         );
