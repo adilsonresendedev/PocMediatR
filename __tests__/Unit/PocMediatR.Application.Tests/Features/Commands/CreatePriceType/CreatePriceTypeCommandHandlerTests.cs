@@ -7,7 +7,7 @@ namespace PocMediatR.Application.Tests.Features.Commands.CreatePriceType
 {
     public class CreatePriceTypeCommandHandlerTests : HandlerTestBase<CreatePriceTypeCommand, CreatePriceTypeCommandHandler, CreatePriceTypeCommandResponse>
     {
-        private IPocMediatRContext Context => GetParam<IPocMediatRContext>();
+        private IPocMediatrWriteContext Context => GetParam<IPocMediatrWriteContext>();
         private IMediator Mediator => GetParam<IMediator>();
         private CreatePriceTypeCommand defaultRequest;
         public CreatePriceTypeCommandHandlerTests()

@@ -4,12 +4,12 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=YourStrong!Passw0rd
+      - SA_PASSWORD=1234
     ports:
       - "1433:1433"
 
   postgres:
-    image: postgres:15
+    image: postgres:17
     environment:
       - POSTGRES_DB=PocMediatRDb
       - POSTGRES_USER=postgres
@@ -30,7 +30,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      ConnectionStrings__SqlServer: "Server=sqlserver;Database=PocMediatRDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
+      ConnectionStrings__SqlServer: "Server=sqlserver;Database=PocMediatRDb;User Id=sa;Password=1234;TrustServerCertificate=True;"
       ConnectionStrings__PostgresSql: "Host=postgres;Port=5432;Database=PocMediatRDb;Username=postgres;Password=1234"
       RabbitMqSettings__HostName: "rabbitmq"
       RabbitMqSettings__UserName: "guest"
@@ -45,7 +45,7 @@ services:
       context: .
       dockerfile: src/PocMediatR.EntitySyncWorker/Dockerfile
     environment:
-      ConnectionStrings__SqlServer: "Server=sqlserver;Database=PocMediatRDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
+      ConnectionStrings__SqlServer: "Server=sqlserver;Database=PocMediatRDb;User Id=sa;Password=1234;TrustServerCertificate=True;"
       ConnectionStrings__PostgresSql: "Host=postgres;Port=5432;Database=PocMediatRDb;Username=postgres;Password=1234"
       RabbitMqSettings__HostName: "rabbitmq"
       RabbitMqSettings__UserName: "guest"

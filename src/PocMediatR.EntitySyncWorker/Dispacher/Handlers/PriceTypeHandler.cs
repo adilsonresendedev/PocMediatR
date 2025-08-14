@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PocMediatR.Domain.Context;
 using PocMediatR.Domain.Entities;
 using PocMediatR.EntitySyncWorker.Messages;
-using PocMediatR.Infra.Context;
 
 namespace PocMediatR.EntitySyncWorker.Dispacher.Handlers
 {
     public class PriceTypeHandler : IMessageHandler<PriceTypeMessage>
     {
-        private readonly PocMediatRReadContext _context;
+        private readonly IPocMediatrReadContext _context;
 
-        public PriceTypeHandler(PocMediatRReadContext context)
+        public PriceTypeHandler(IPocMediatrReadContext context)
         {
             _context = context;
         }

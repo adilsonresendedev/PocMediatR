@@ -8,14 +8,14 @@ namespace PocMediatR.Application.Tests._Mocks
 {
     public static class ContextMock
     {
-        public static IPocMediatRContext Mock<TEntity>(this IPocMediatRContext context, params TEntity[] entities) where TEntity : BaseEntity
+        public static IPocMediatrWriteContext Mock<TEntity>(this IPocMediatrWriteContext context, params TEntity[] entities) where TEntity : BaseEntity
         {
             var mockedEntity = entities.AsQueryable().BuildMockDbSet();
             context.ReturnsForAll(mockedEntity);
             return context;
         }
 
-        public static IPocMediatRContext Mock<TEntity>(this IPocMediatRContext context, int quantity = 10) where TEntity : BaseEntity
+        public static IPocMediatrWriteContext Mock<TEntity>(this IPocMediatrWriteContext context, int quantity = 10) where TEntity : BaseEntity
         {
             if (quantity <= 0)
                 return context.EmptyMock<TEntity>();
@@ -28,7 +28,7 @@ namespace PocMediatR.Application.Tests._Mocks
             return context.Mock(data);
         }
 
-        public static IPocMediatRContext EmptyMock<TEntity>(this IPocMediatRContext context) where TEntity : BaseEntity
+        public static IPocMediatrWriteContext EmptyMock<TEntity>(this IPocMediatrWriteContext context) where TEntity : BaseEntity
         {
             return context.Mock(Array.Empty<TEntity>());
         }

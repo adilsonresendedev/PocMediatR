@@ -4,7 +4,7 @@ using PocMediatR.Domain.Context;
 namespace PocMediatR.Application.Features.Commands.CreatePriceType
 {
     public class CreatePriceTypeCommandHandler(IEnumerable<AbstractValidator<CreatePriceTypeCommand>> validators,
-        IPocMediatRContext context) : HandlerBase<CreatePriceTypeCommand, CreatePriceTypeCommandResponse>(validators)
+        IPocMediatrWriteContext context) : HandlerBase<CreatePriceTypeCommand, CreatePriceTypeCommandResponse>(validators)
     {
         public override async Task<CreatePriceTypeCommandResponse> ProcessHandler(CreatePriceTypeCommand request, CancellationToken cancellationToken)
         {

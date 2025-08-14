@@ -2,14 +2,14 @@ using PocMediatR.EntitySyncWorker.Dispacher;
 using PocMediatR.EntitySyncWorker.Messages;
 using PocMediatR.Infra.MessageBus;
 
-namespace PocMediatR.EntitySyncWorker;
+namespace PocMediatR.EntitySyncWorker.Workers;
 
-public class Worker : BackgroundService
+public class MessageProcessingWorker : BackgroundService
 {
     private readonly IConsumerMessageBus _bus;
     private readonly IMessageDispacher _dispatcher;
 
-    public Worker(IConsumerMessageBus bus, IMessageDispacher dispatcher)
+    public MessageProcessingWorker(IConsumerMessageBus bus, IMessageDispacher dispatcher)
     {
         _bus = bus;
         _dispatcher = dispatcher;
