@@ -54,9 +54,9 @@ namespace PocMediatR.EntitySyncWorker.Services
                 Console.WriteLine($"Database '{databaseName}' already exists.");
             }
         }
+
         private async Task ApplyScripts(IEnumerable<string> scripts)
         {
-
             foreach (var script in scripts)
             {
                 var sql = await File.ReadAllTextAsync(script);
