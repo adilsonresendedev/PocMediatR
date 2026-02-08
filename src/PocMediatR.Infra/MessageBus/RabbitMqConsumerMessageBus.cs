@@ -18,7 +18,8 @@ namespace PocMediatR.Infra.MessageBus
             {
                 HostName = settings.HostName,
                 UserName = settings.UserName,
-                Password = settings.Password
+                Password = settings.Password,
+                Port = 5672
             };
         }
 

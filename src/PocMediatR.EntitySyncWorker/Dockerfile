@@ -1,23 +1,28 @@
+# Stage 1: Build
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
-ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-COPY src/PocMediatR.EntitySyncWorker/PocMediatR.EntitySyncWorker.csproj src/PocMediatR.EntitySyncWorker/
-COPY src/PocMediatR.Domain/PocMediatR.Domain.csproj src/PocMediatR.Domain/
-COPY src/PocMediatR.Common/PocMediatR.Common.csproj src/PocMediatR.Common/
-COPY src/PocMediatR.Infra/PocMediatR.Infra.csproj src/PocMediatR.Infra/
+COPY ["src/PocMediatR.EntitySyncWorker/PocMediatR.EntitySyncWorker.csproj", "src/PocMediatR.EntitySyncWorker/"]
+COPY ["src/PocMediatR.Infra/PocMediatR.Infra.csproj", "src/PocMediatR.Infra/"]
+COPY ["src/PocMediatR.Domain/PocMediatR.Domain.csproj", "src/PocMediatR.Domain/"]
+COPY ["src/PocMediatR.Application/PocMediatR.Application.csproj", "src/PocMediatR.Application/"]
 
-RUN dotnet restore src/PocMediatR.EntitySyncWorker/PocMediatR.EntitySyncWorker.csproj
+# Restore dependencies
+RUN dotnet restore "src/PocMediatR.EntitySyncWorker/PocMediatR.EntitySyncWorker.csproj"
 
+# Copy everything else and build
 COPY . .
+WORKDIR "/src/src/PocMediatR.EntitySyncWorker"
+RUN dotnet publish "PocMediatR.EntitySyncWorker.csproj" -c Release -o /app/publish
 
-WORKDIR /src/src/PocMediatR.EntitySyncWorker
-RUN dotnet publish PocMediatR.EntitySyncWorker.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
-
-FROM mcr.microsoft.com/dotnet/runtime:9.0 AS final
+# Stage 2: Runtime
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
+
+# Copy published output
 COPY --from=build /app/publish .
 
-COPY src/Persistence/Scripts /app/Persistence/Scripts
+# Copy SQL scripts (adjust path if needed)
+COPY src/PocMediatR.EntitySyncWorker/Persistence/Scripts /app/Persistence/Scripts
 
 ENTRYPOINT ["dotnet", "PocMediatR.EntitySyncWorker.dll"]

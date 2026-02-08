@@ -1,56 +1,93 @@
 version: '3.8'
+
 services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: poc-sqlserver
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=P@ssw0rd123
     ports:
       - "1433:1433"
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P P@ssw0rd123 -Q 'SELECT 1' -C || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 20s
 
   postgres:
     image: postgres:17
+    container_name: poc-postgres
     environment:
-      - POSTGRES_DB=PocMediatRDb
+      - POSTGRES_DB=PocMediatrReadDb
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=1234
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   rabbitmq:
     image: rabbitmq:3-management
+    container_name: rabbitmq
     ports:
-      - "5672:5672" # messaging port
-      - "15672:15672" # management UI
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmq-diagnostics -q ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   api:
     build:
       context: .
       dockerfile: src/PocMediatR.API/Dockerfile
+    container_name: poc-api
     ports:
       - "8080:8080"
     environment:
-      ConnectionStrings__SqlServer: "Server=sqlserver;Database=PocMediatRDb;User Id=sa;Password=1234;TrustServerCertificate=True;"
+      # Connection Strings
+      ConnectionStrings__SqlServer: "Server=sqlserver;Database=PocMediatrWriteDb;User Id=sa;Password=P@ssw0rd123;TrustServerCertificate=True;"
       ConnectionStrings__PostgresSql: "Host=postgres;Port=5432;Database=PocMediatRDb;Username=postgres;Password=1234"
+      
+      # RabbitMQ
       RabbitMqSettings__HostName: "rabbitmq"
       RabbitMqSettings__UserName: "guest"
       RabbitMqSettings__Password: "guest"
+
     depends_on:
-      - sqlserver
-      - postgres
-      - rabbitmq
+      sqlserver:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
 
   worker:
-    build:
-      context: .
-      dockerfile: src/PocMediatR.EntitySyncWorker/Dockerfile
-    environment:
-      ConnectionStrings__SqlServer: "Server=sqlserver;Database=PocMediatRDb;User Id=sa;Password=1234;TrustServerCertificate=True;"
-      ConnectionStrings__PostgresSql: "Host=postgres;Port=5432;Database=PocMediatRDb;Username=postgres;Password=1234"
-      RabbitMqSettings__HostName: "rabbitmq"
-      RabbitMqSettings__UserName: "guest"
-      RabbitMqSettings__Password: "guest"
-    depends_on:
-      - sqlserver
-      - postgres
-      - rabbitmq
+      networks:
+        - default
+      build:
+        context: .
+        dockerfile: src/PocMediatR.EntitySyncWorker/Dockerfile
+      depends_on:
+        postgres:
+          condition: service_healthy
+        rabbitmq:
+          condition: service_healthy
+      environment:
+        ConnectionStrings__SqlServer: "Server=sqlserver;Database=PocMediatrWriteDb;User Id=sa;Password=P@ssw0rd123;TrustServerCertificate=True;"
+        ConnectionStrings__PostgresSql: "Host=postgres;Port=5432;Database=PocMediatrReadDb;Username=postgres;Password=1234"
+        RabbitMqSettings__HostName: "rabbitmq"
+        RabbitMqSettings__UserName: "guest"
+        RabbitMqSettings__Password: "guest"
+
+networks:
+  default:
+    driver: bridge

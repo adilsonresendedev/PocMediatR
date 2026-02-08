@@ -18,7 +18,7 @@ namespace PocMediatR.EntitySyncWorker.Services
         public async Task ApplyPendingScriptsAsync()
         {
             await EnsureDatabaseExistsAsync(
-                "Host=localhost;Username=postgres;Password=1234", "PocMediatrReadDb"
+                "Host=postgres;Port=5432;Username=postgres;Password=1234", "PocMediatrReadDb"
             );
 
             await SetUpDatabase();
@@ -114,24 +114,13 @@ namespace PocMediatR.EntitySyncWorker.Services
 
         private static string GetScriptsFolder()
         {
-            var folderName = "Persistence";
-            var scriptsDirName = "Scripts";
+            var defaultPath = Path.Combine(AppContext.BaseDirectory, "Persistence", "Scripts");
 
-            var dir = new DirectoryInfo(Directory.GetCurrentDirectory());
-
-            while (dir != null)
-            {
-                var potentialPath = Path.Combine(dir.FullName, folderName, scriptsDirName);
-                if (Directory.Exists(potentialPath))
-                {
-                    Console.WriteLine($"Scripts folder found at: {potentialPath}");
-                    return potentialPath;
-                }
-                dir = dir.Parent;
-            }
+            if (Directory.Exists(defaultPath))
+                return defaultPath;
 
             throw new DirectoryNotFoundException(
-                $"Could not locate the '{folderName}/{scriptsDirName}' folder starting from {Directory.GetCurrentDirectory()}");
+                $"Could not locate scripts folder at {defaultPath}");
         }
     }
 }   
